@@ -78,6 +78,17 @@ return [
             'prefix' => '',
         ],
 
+        'mongodb' => [
+            'driver'   => 'mongodb',
+            'dsn' => env('MONGO_HOST', 'mongodb://127.0.0.1:27017'),
+            'username' => env('MONGO_USERNAME'),
+            'password' => env('MONGO_PASSWORD'),
+            'database' => env('MONGO_DATABASE'),
+            'options'  => [
+                'connectTimeoutMS' => '50' // sets the authentication database required by mongo 3
+            ]
+        ],
+
     ],
 
     /*

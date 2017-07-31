@@ -11,6 +11,8 @@
 |
 */
 
+Route::match(['get', 'post'], '/p/{filename}', 'PageController@index');
+
 Route::get('/', function () {
     return view('index');
 });

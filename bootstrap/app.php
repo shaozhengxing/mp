@@ -41,6 +41,11 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+$app->afterLoadingEnvironment(function () {
+    require_once __DIR__ . '/../bootstrap/define.php';
+    require_once __DIR__ . '/../bootstrap/utility.php';
+});
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application
