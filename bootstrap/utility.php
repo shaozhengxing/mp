@@ -1,5 +1,5 @@
 <?php
-//shaozhengxing@baixing.com
+//zhengxingok@gmail.com
 //用户存放全局定义的utility函数
 
 function remote_ip() {

@@ -1,5 +1,5 @@
 <?php
-//shaozhengxing@baixing.com
+//zhengxingok@gmail.com
 
 namespace App\Http\Controllers;
 

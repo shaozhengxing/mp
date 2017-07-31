@@ -1,6 +1,5 @@
 <?php
-//jinjiajun@baixing.com
-
+//zhengxingok@gmail.com
 namespace App\Models\Base;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
