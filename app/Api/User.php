@@ -5,6 +5,6 @@ namespace App\Api;
 
 class User {
     public function all() {
-        return \App\Models\User::findObj([]);
+        return array_values(\App\Models\User::findObj([]));
     }
 }
