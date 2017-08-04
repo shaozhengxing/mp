@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+DOCKER_REPO=shaozhengxing/mp
+DOCKERDIR_PRO="./docker"
+DATE=$(date +"%s")
+IMAGENAME_PRO='mp'
+
+function get_help() {
+    echo "Usage: $0
+    release           #构建 release 镜像,并推送到 daocloud
+    "
+}
+
+function log() {
+    echo -e "\033[32m[ LOG ]\033[0m  $1"
+}
+
+function error() {
+    echo -e "\033[31m[ERROR]\033[0m $1"
+}
+
+function check() {
+    if [ $? != "0" ];then
+        error "previous step failed, stop execute"
+        exit 1
+    fi
+}
+
+function step() {
+    check
+    echo -e "\033[33m[STEP$1]\033[0m  $2"
+}
+
+function init_code() {
+    git reset --hard
+    git checkout $1
+    git pull origin $1
+}
+
+function compile {
+    # blade页面
+    npm install
+    npm run production
+}
+
+function build_prepare() {
+    local branch=$1
+    log "start building $branch"
+    step 1 "init code to branch $branch"
+    init_code "$branch"
+    step 2 "install php dependence by composer"
+    composer install --no-dev -n
+    step 3 "compile frontend files ${1}"
+    compile "$1"
+}
+
+function release() {
+    log "start releasing"
+    build_prepare "master"
+    step 4 "build docker image"
+    local release_tag=$DATE
+    log "$DOCKER_REPO:$release_tag"
+    docker build -t $DOCKER_REPO:$release_tag -f $DOCKERDIR_PRO/Dockerfile .
+    step 5 "push to docker hub"
+    docker push $DOCKER_REPO:$release_tag
+    # docker rmi $DOCKER_REPO:$release_tag
+}
+
+function test() {
+    local release_tag=$DATE
+    log "$DOCKER_REPO:$release_tag"
+    docker build -t $DOCKER_REPO:$release_tag -f $DOCKERDIR_PRO/Dockerfile .
+    docker push $DOCKER_REPO:$release_tag
+}
+
+case "$1" in
+    release)
+        release
+        ;;
+    test)
+        test
+        ;;
+    *)
+        get_help
+esac
